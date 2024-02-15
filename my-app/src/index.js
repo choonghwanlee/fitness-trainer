@@ -3,10 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Webcam from 'react-webcam';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <Webcam
+      audio={false}
+      // height={720}
+      // width={1280}
+      mirrored={true}
+    />
     <App />
   </React.StrictMode>
 );
