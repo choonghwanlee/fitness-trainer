@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+// import Webcam from 'react-webcam';
+import CustomWebcam from "./Webcam"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <CustomWebcam/>
     <App />
   </React.StrictMode>
 );
