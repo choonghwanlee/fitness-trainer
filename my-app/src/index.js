@@ -9,7 +9,7 @@ import CustomWebcam from "./Webcam"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <CustomWebcam/>
+   
     <App />
   </React.StrictMode>
 );
