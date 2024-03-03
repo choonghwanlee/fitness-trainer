@@ -23,13 +23,13 @@ function App() {
   //  Load posenet
   const runPosenet = async () => {
     const net = await posenet.load({
-      inputResolution: { width: 640, height: 480 },
-      scale: 0.8,
+      inputResolution: { width: 480, height: 360 },
+      scale: 0.5,
     });
     //
     setInterval(() => {
       detect(net);
-    }, 100);
+    }, 200);
   };
 
   const detect = async (net) => {
