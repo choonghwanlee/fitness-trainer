@@ -1,10 +1,10 @@
-// 2. Import dependencies DONE
-// 3. Setup webcam and canvas DONE
-// 4. Define references to those DONE
-// 5. Load posenet DONE
-// 6. Detect function DONE
-// 7. Drawing utilities from tensorflow DONE
-// 8. Draw functions DONE
+// // 2. Import dependencies DONE
+// // 3. Setup webcam and canvas DONE
+// // 4. Define references to those DONE
+// // 5. Load posenet DONE
+// // 6. Detect function DONE
+// // 7. Drawing utilities from tensorflow DONE
+// // 8. Draw functions DONE
 
 import React, { useRef } from "react";
 import "./App.css";
@@ -13,9 +13,34 @@ import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
 
+
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const [intervalID, setIntervalID] = React.useState(null);
+  const [buttonText, setButtonText] = React.useState("Start recording");
+
+  const screenshot = React.useCallback(() => {
+    // TOOD: send screenshot to pose detection pipeline
+    const imageSrc = webcamRef.current.getScreenshot(); // png as string
+    let timestamp = Date.now();
+    console.log(timestamp, typeof imageSrc);
+  }, [webcamRef]);
+
+  let record = false;
+  const toggleRecord = () => {
+    record = !record;
+    if (record && intervalID === null) {
+      setIntervalID(setInterval(screenshot, 100));
+      setButtonText("Stop recording");
+      console.log("Started recording");
+    } else {
+      clearInterval(intervalID);
+      setIntervalID(null);
+      setButtonText("Start recording");
+      console.log("Stopped recording");
+    }
+  };
 
 
 
@@ -24,12 +49,12 @@ function App() {
   const runPosenet = async () => {
     const net = await posenet.load({
       inputResolution: { width: 640, height: 480 },
-      scale: 0.8,
+      scale: 0.5,
     });
     //
     setInterval(() => {
       detect(net);
-    }, 100);
+    }, 300);
   };
 
   const detect = async (net) => {
@@ -66,11 +91,14 @@ function App() {
 
   runPosenet();
 
+
   return (
     <div className="App">
       <header className="App-header">
         <Webcam
           ref={webcamRef}
+          screenshotFormat="image/png"
+          audio={false}
           style={{
             position: "absolute",
             marginLeft: "auto",
@@ -81,8 +109,14 @@ function App() {
             zindex: 9,
             width: 640,
             height: 480,
+            
           }}
         />
+
+<div className="button-container">
+  <button onClick={screenshot}>Capture photo</button>
+  <button onClick={toggleRecord}>{buttonText}</button>
+</div>
 
         <canvas
           ref={canvasRef}
@@ -104,3 +138,50 @@ function App() {
 }
 
 export default App;
+
+
+
+// function CustomWebcam() {
+//   const webcamRef = React.useRef(null);
+//   const [intervalID, setIntervalID] = React.useState(null);
+//   const [buttonText, setButtonText] = React.useState("Start recording");
+
+//   const screenshot = React.useCallback(() => {
+//     // TOOD: send screenshot to pose detection pipeline
+//     const imageSrc = webcamRef.current.getScreenshot(); // png as string
+//     let timestamp = Date.now();
+//     console.log(timestamp, typeof imageSrc);
+//   }, [webcamRef]);
+
+//   let record = false;
+//   const toggleRecord = () => {
+//     record = !record;
+//     if (record && intervalID === null) {
+//       setIntervalID(setInterval(screenshot, 100));
+//       setButtonText("Stop recording");
+//       console.log("Started recording");
+//     } else {
+//       clearInterval(intervalID);
+//       setIntervalID(null);
+//       setButtonText("Start recording");
+//       console.log("Stopped recording");
+//     }
+//   };
+
+//   return (
+//     <>
+//       <Webcam
+//         audio={false}
+//         height={512}
+//         width={512}
+//         mirrored={true}
+//         ref={webcamRef}
+//         screenshotFormat="image/png"
+//       />
+//       <button onClick={screenshot}>Capture photo</button>
+//       <button onClick={toggleRecord}>{buttonText}</button>
+//     </>
+//   );
+// }
+
+// export default CustomWebcam;
