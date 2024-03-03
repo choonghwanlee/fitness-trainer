@@ -13,9 +13,7 @@
   }
 }
 
-video {
-  transform: scaleX(-1);
-}
+
 
 
 .App-header {
@@ -31,6 +29,13 @@ video {
 
 .App-link {
   color: #61dafb;
+}
+
+.button-container {
+  position: fixed; /* Or absolute, depending on your layout needs */
+  right: 0;
+  top: 50%; /* Adjust as needed to position vertically */
+  transform: translateY(-50%); /* Centers the buttons vertically */
 }
 
 @keyframes App-logo-spin {
